@@ -1,8 +1,17 @@
 const request = require('request');
-const url = "https://api.thecatapi.com/v1/breeds/search?q=siberian"
+let cat = process.argv.slice(2);
+cat = cat.join("_");
+const url = "https://api.thecatapi.com/v1/breeds/search?q=";
+const search = url + cat;
 
-request(url, (error, response, body) => {
+request(search, (error, response, body) => {
+  if (error) {
+    return console.log(error);
+  }
   const data = JSON.parse(body);
-  console.log(data);
+  if (data[0] === undefined) {
+    return console.log('No Cat Found.');
+  }
+  console.log(data[0]['description']);
 });
 
